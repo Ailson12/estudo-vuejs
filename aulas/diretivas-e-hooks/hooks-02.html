@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>{{ contador }}</p>
+        <button @click="contador++">Adicionar</button>
+        <button @click="destroir">Destroir</button>
+    </div>
+<script>
+    const vm = new Vue({
+        el: "#app",
+        data: {
+          contador: 0
+        },
+        methods: {
+            destroir() {
+                this.$destroy();
+            }
+        },
+        /*
+        *   A diferença entre o metodo beforeUpdate e updated é que no primeiro caso, o dom ainda não renderizou a mudança
+            ja o segundo é executado somente após o dom sofrer a atualização
+        */
+        //  este metodo é executado sempre que uma propriedade atualizar
+        beforeUpdate() {
+            console.log("teste");
+        },
+        updated() {
+            // este metodo é executado sempre que uma propriedade atualizar
+            console.log("teste 02");
+        },
+        beforeDestroy() {
+            console.log("destruir a instancia do vuejs");
+        },
+        destroyed() {
+            console.log("destruiu");
+        }
+    });
+</script>
+</body>
+</html>

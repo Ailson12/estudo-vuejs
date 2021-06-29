@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <lista-produtos
+            :frutas="lista"
+            titulo="Este é o titulo"
+        >
+        </lista-produtos>
+    </div>
+<script type="module">
+    const ListaProdutos = {
+        name: "ListaProdutos",
+        // props: ["frutas", "titulo"],
+        props: {
+            frutas: {
+                type: Array,
+                required: false,
+                default: ["Item 01"]
+            }
+        },
+        template: `
+            <ul>
+                <h1>{{ titulo }}</h1>
+                <li v-for="(fruta, indice) in frutas">Teste</li>
+                {{ frutas }}
+            </ul>
+        `
+    }
+    
+    const vm = new Vue({
+        el: "#app",
+        data: {
+            lista: ["Banana", "Laranja", "Uva"]
+        },
+        components: {
+            ListaProdutos
+        }
+    });
+</script>
+</body>
+</html>

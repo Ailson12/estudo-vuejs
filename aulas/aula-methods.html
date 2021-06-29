@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./vue.js"></script>
+    <title>Vue js</title>
+</head>
+<body>
+    <div id="app">
+        <br><br>
+        <button @click="incrementar">Aumentar</button>
+        <button @click="diminuir">Diminuir</button>
+        <br><br>
+        {{ total }}
+
+        <hr><hr>
+
+        <br><br>
+        <button @click="mudarCompra('Guitarra')">Guitarra</button>
+        <button @click="mudarCompra('Violão')">Violão</button>
+        <br><br>
+
+        {{ compra }}
+    </div>
+
+    <br><br>
+
+    <!-- Exercico -->
+    <div id="exercicio">
+        <p>{{ titulo }}</p>
+
+        <p>preço mais recente: {{ latestPrice }}</p>
+        <p>última hora: {{ latestTime }}</p>
+        <p>nome da empresa: {{ companyName }}</p>
+        <button @click="getPreco">Ver Preço</button>
+    </div>
+<script>
+    const vm = new Vue({
+        el: "#app",
+        data: {
+            total: 0,
+            compra: "Não definido"
+        },
+        methods: {
+            incrementar() {
+                return this.total++;
+            },
+            diminuir() {
+                return this.total--;
+            },
+            mudarCompra(compra) {
+                this.compra = compra;
+            }
+        }
+    });
+
+    // Exercico
+    // Utilizando a API
+    // https://api.origamid.dev/stock/aapl/quote
+
+    // Crie um método que faça o fetch da resposta acima
+    // O método deve ser ativado ao clique no botão Ver Preço
+
+    // Coloque a resposta json do fetch em uma data e
+    // mostre o valor de lalestPrice, latestTime e o
+    // companyName na interface.
+
+    const vmExercicio = new Vue({
+        el: "#exercicio",
+        data: {
+            titulo: "Exercicio",
+            latestPrice: 0,
+            latestTime: new Date(),
+            companyName: "",
+        },
+        methods: {
+            getPreco() {
+                fetch("https://api.origamid.dev/stock/aapl/quote")
+                .then(data => data.json())
+                .then(({ latestPrice, latestTime, companyName }) => {
+                    this.latestPrice = latestPrice;
+                    this.latestTime = latestTime;
+                    this.companyName = companyName;
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

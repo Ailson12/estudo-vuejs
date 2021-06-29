@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>{{ mensagem }}</p>
+        <p>{{ github }}</p>
+    </div>
+<script>
+    const vm = new Vue({
+        el: "#app",
+        data: {
+          mensagem: "Essa é uma mensagem",
+          github: {}
+        },
+        methods: {
+            getGihub() {
+                fetch("https://api.github.com/users/origamid")
+                .then((response) => response.json())
+                .then((data) => this.github = data);
+            }
+        },
+        // executa antes da criação do vuejs
+        beforeCreate() {
+            // a propriedade mensagem ainda nao existe neste método
+            console.log(this.mensagem);
+        },
+        // executa no momento em que o vuejs é criado
+        // no metodo created, a instancia do vuejs ja foi criada, mas o DOM ainda não foi criado.
+        created() {
+            // Usamos o metodo create normalmente para fazer fetch de algum metodo, assim que a instancia é criada.
+            this.getGihub();
+            console.log("Elemento", this.$el);
+        },
+        beforeMount() {
+            // o que diferencia o metodo beforeMount ? Neste método a instancia do vuejs ja foi criada e o dom ja foi criado 
+            console.log("BeforeMouunt", this.$el);
+            console.log(this.mensagem);
+        },
+        mounted() {
+            // no mounted ele foi criado e populado com a reatividade
+            // no mounted fica a ultima momento do ciclo do vuejs
+            console.log(this.$el);
+        }
+    });
+</script>
+</body>
+</html>

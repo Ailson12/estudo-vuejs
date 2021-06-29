@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <hr>
+        <empresas-americanas></empresas-americanas>
+    </div>
+    <!-- 
+  Crie um componente com um campo de input e um botão para enviar o valor.
+  Nesse campo de input será possível escrever o simbolo de empresas americanas
+
+  simbolos ex:
+  aapl -> Apple
+  goog -> Google
+  msft -> Microsoft
+  amzn -> Amazon
+  fb -> Facebook
+
+  Ao clicar no botão, faça um fetch com a API:
+  https://api.origamid.dev/stock/${SIMBOLO}/quote
+
+  O resultado do fetch deverá ser mostrado em um componente filho do formulário.
+  Envia as informações utilizando prop
+ 
+  Mostre todas as informações do fetch utilizando um loop.
+ -->
+
+<script type="module">
+    const CardEmpresasAmericanas = {
+        name: "CardEmpresasAmericanas",
+        template: `
+            <ul>
+                <li v-for="(item, indice) in dados" :key="item + indice">
+                    {{ indice }} : {{ item }}
+                </li>
+            </ul>
+        `,
+        props: {
+            dados: {
+                type: Object,
+                required: true
+            }
+        }
+    }
+
+    const EmpresasAmericanas = {
+        name: "EmpresasAmericanas",
+        data() {
+            return {
+                simboloEmpresa: "",
+                dadosEmpresa: {}
+            }
+        },
+        template: `
+            <div>
+                <input type="text"  name="valor" v-model="simboloEmpresa" />
+                <button @click="getEmpresa" type="button">Enviar</button>
+                <hr />
+
+                <card-empresas-americanas :dados="dadosEmpresa"></card-empresas-americanas>
+            </div>
+        `,
+        components: {
+            CardEmpresasAmericanas
+        },
+        methods: {
+            getEmpresa() {
+                fetch(`https://api.origamid.dev/stock/${this.simboloEmpresa}/quote`)
+                .then((response) => response.json())
+                .then((data) => this.dadosEmpresa = data);
+            }
+        }
+    }
+
+    const vm = new Vue({
+        el: "#app",
+        data: {
+        },
+        components: {
+            EmpresasAmericanas
+        }
+    });
+</script>
+</body>
+</html>

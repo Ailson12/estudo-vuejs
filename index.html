@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <componente-um></componente-um>
+        <componente-dois></componente-dois>
+    </div>
+
+<script type="module">
+    // Esta tecnica é conhecida como EventBus
+    // recomendada para ficar observando eventos entre componentes que nao tem relação
+    // só é recomendado em casos simples, em aplicativos mais complexos o iedal é que utilize o Vuex
+    const EventBus = new Vue();
+    
+    const componenteUm = {
+        name: "componenteUm",
+        template: `<p @click="emitirEvento">Componente 01</p>`,
+        data() {
+            return {
+                mensagem: "Esse é o componente 01"
+            }
+        },
+        methods: {
+            emitirEvento() {
+                // Emitindo um evento
+                EventBus.$emit("meuEvento", this.mensagem);
+            }
+        }
+    }
+
+    // utilizamos o método meuEvento para capturar um evento
+    EventBus.$on("meuEvento", (event) => {
+        console.log("Evento ocorreu", event);
+    });
+
+    const componenteDois = {
+        name: "componenteDois",
+        template: `<p>Componente 02</p>`
+    }
+
+    const vm = new Vue({
+        el: "#app",
+        data: {
+            contador: 0
+        },
+        components: {
+            componenteUm,
+            componenteDois
+        }
+    });
+</script>
+</body>
+</html>

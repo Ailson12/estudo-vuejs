@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{ contador }}
+        <!-- $event => representa a informação que este evento está enviando -->
+
+        <!-- 
+            O método sync é utilizado para atualizar uma propriedade no component pai.
+            O exemplo um é uma sintaxe mais curta da segunda linha
+            O método async, sincroniza as propriedades
+            * 
+                Para o método async funcionar o emit do evento precisa estar no seguinte estilo de codigo:
+                this.$emit("update:nomeDaPropriedade", "valor a ser enviado");
+            *
+
+            01) :contador.sync="contador" 
+            02) @update:contador="contador = $event"
+         -->
+        <meu-botao 
+            :contador.sync="contador"
+        />
+    </div>
+
+<script type="module">
+    const MeuBotao = {
+        name: "MeuBotao",
+        props: ["contador"],
+        data() {
+            return {
+                contadorComponente: this.contador
+            }
+        },
+        template: `<button @click="incrementar">Clique {{ contadorComponente }}</button>`,
+        methods: {
+            incrementar() {
+                this.contadorComponente++;
+                this.$emit("update:contador", this.contadorComponente);
+            }
+        }
+    }
+
+    const vm = new Vue({
+        el: "#app",
+        components: {
+            MeuBotao
+        },
+        data: {
+            contador: 0
+        }
+    });
+</script>
+</body>
+</html>

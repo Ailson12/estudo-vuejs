@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{ mensagem }}
+        <!-- @origamid se refere ao nome do evento que estamos ouvindo -->
+        <!-- mostrarMensagem o metodo que sera executado quando este evento ocorrer -->
+        <!-- meu-botao é o component que foi registrado -->
+        <meu-botao @origamid="mostrarMensagem" />
+    </div>
+
+<script type="module">
+    const MeuBotao = {
+        name: "MeuBotao",
+        data() {
+            return {
+                totalClientes: 200
+            }
+        },
+        template: `<button @click="handleClick">Clique</button>`,
+        methods: {
+            handleClick() {
+                // emit é o metodo que usamos quando desejamos enviar informacoes de componentes filhos para components pais
+                // o primeiro parametro é o nome do evento, e o segundo parametro são os dados que serão enviados juntamente com o evento
+                this.$emit("origamid", this.totalClientes);
+            }
+        },
+        created() {
+            setTimeout(() => {
+                this.$emit("origamid");
+            }, 2000);
+        }
+    }
+
+    const vm = new Vue({
+        el: "#app",
+        data: {
+            mensagem: ""
+        },
+        methods: {
+            mostrarMensagem(evento) {
+                this.mensagem = evento;
+            }
+        },
+        components: {
+            MeuBotao
+        }
+    });
+</script>
+</body>
+</html>

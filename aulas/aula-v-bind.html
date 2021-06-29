@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./vue.js"></script>
+    <title>Vue js</title>
+    <style>
+        .azul {
+            background-color: aqua;
+        }
+
+        .text-white {
+            color: white !important;
+        }
+
+        .label {
+            padding: 5px;
+            border: none;
+            margin-left: 11px;
+            border-radius: 6px;
+            box-shadow: 0px 1px 4px black;
+        }
+
+        .vermelho {
+            background-color: #ff0000;
+        }
+
+        .verde {
+            background-color: #60b300;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        {{ titulo }}
+        <a v-bind:href="link">Link Google</a>
+        <p :class="cor">{{ titulo }}</p>
+
+        <p>Usuario comprou? <span class="text-white label" :class="comprou ? 'verde' : 'vermelho'">{{ comprou ? "Sim" : "Nao" }}</span></p>
+    </div>
+
+    <br><br><br>
+
+    <div id="exercicio">
+        <p>{{ titulo }}</p>
+
+        <p>Empresas</p>
+        <div v-for="(empresa, indice) in empresas" :key="indice">
+            <p>
+                <br><br>
+                <strong class="text-white label" :class="maiorMarketCap(empresa.marketCap)">Nome Empresa</strong>: {{ empresa.companyName }} <br>
+                <strong>Valor marketCap</strong> : {{ empresa.marketCap }}
+            </p>
+        </div>
+    </div>
+<script>
+    const vm = new Vue({
+        el: "#app",
+        data: {
+            titulo: "Vuejs !",
+            link: "https://www.google.com",
+            cor: "azul",
+            comprou: true
+        }
+    });
+
+    // Exercicio
+    // Utilizando as API's
+    // https://api.origamid.dev/stock/aapl/quote
+    // https://api.origamid.dev/stock/googl/quote
+
+    // - Compare o marketCap (valor de
+    // mercado) entre ambas.
+
+    // - Mostre o nome das empresas e o valor
+    // na interace (companyName e marketCap).
+
+    // - Mude a cor para verde o nome da empresa com
+    // maior marketCap e vermelho a com menor.
+
+    const vm2 = new Vue({
+        el: "#exercicio",
+        data: {
+            titulo: "Exercicio vuejs !",
+            empresas: [],
+            marketCap: []
+        },
+        created() {
+            this.getEmpresa("aapl");
+            this.getEmpresa("googl");
+        },
+        methods: {
+            maiorMarketCap(marketCap) {
+                console.log(marketCap);
+                const maiorMarketCap = Math.max(...this.marketCap);
+                return marketCap == maiorMarketCap ? "verde" : "vermelho";
+            },
+            getEmpresa(empresa) {
+                fetch(`https://api.origamid.dev/stock/${empresa}/quote`)
+                .then((response) => response.json())
+                .then((data) => {
+                    this.empresas.push(data)
+                    this.marketCap.push(data.marketCap);
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

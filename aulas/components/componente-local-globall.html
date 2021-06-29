@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>{{ mensagem }}</p>
+        <botao-contador></botao-contador>
+
+        <hr>
+        <componente-global></componente-global>
+
+        <hr>
+        <componente-local></componente-local>
+    </div>
+<script>
+    // Desta forma estamos registrando um component global
+    // O html não sabe interpretar tags maiusculas
+    // o padrao de registrar componente é PascalCase
+    Vue.component("BotaoContador", {
+        data() {
+            return {
+                total: 0
+            }
+        },
+        template: `<button @click="total++">Contar: {{ total }}</button>`,
+        methods: {
+            mostrarConsole() {
+                console.log("Ativo");
+            }
+        }
+    });
+
+    // registrando um componente globa
+    Vue.component("ComponenteGlobal", {
+        template: `<p>Isto é global</p>`
+    });
+
+    // componente local
+    const ComponenteLocal = {
+        name: "ComponenteLocal",
+        template: `<p>Isto é local</p>`
+    }
+
+    const vm = new Vue({
+        el: "#app",
+        data: {
+            mensagem: "Vuejs!"
+        },
+        components: {
+            ComponenteLocal
+        }
+    });
+</script>
+</body>
+</html>

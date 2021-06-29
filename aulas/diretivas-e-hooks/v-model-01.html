@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <!-- 
+        MODIFICADORES
+        Lazy => captura a informacao do input ao perder o foco
+        Number => Converte para numero
+        Trim => Remove os espços da 'ponta'
+     -->
+    <div id="app">
+        <label for="nome">Nome</label>
+        <input type="text" v-model.lazy="nome" id="nome">
+        <p>{{ nome }}</p>
+        
+        <hr>
+
+        <input type="text" v-model.number="ano">
+        {{ ano }}
+
+        <hr>
+
+        <input type="text" v-model.trim="email">
+        {{ email }}
+    </div>
+
+
+    <!-- 
+    1 - Crie um criador de botões.
+
+    O usuário poderá definir:
+    width,
+    height,
+    font-size,
+    font-family,
+    text-align,
+    background,
+    color,
+    border-radius,
+
+    As escolhas serão feitas em campos de
+    formulário. Cada escolha deverá ser 
+    refletida em um elemento (o botão).
+    -->
+    <br><br>
+    <!-- Exercicio -->
+    <style>
+        label {
+            margin: 1rem;
+        }
+
+        .bold {
+            font-weight: 700;
+        }
+
+        .grupo {
+            margin-bottom: 1rem;
+        }
+    </style>
+    <div id="exercicio">
+        <div>
+            <p>Controles</p>
+            <div class="grupo">
+                <label for="background" class="bold">Cor de fundo</label>
+                <input type="color" v-model="background" id="background">
+            </div>
+            <div class="grupo">
+                <label for="color" class="bold">Cor de Texto</label>
+                <input type="color" v-model="color" id="color">
+            </div>
+            <div class="grupo">
+                <label for="largura" class="bold">Largura</label>
+                <input type="range" min="3" max="40" v-model="largura" id="largura">
+            </div>
+            <div class="grupo">
+                <label for="altura" class="bold">Altura</label>
+                <input type="range" min="2" max="40" v-model="altura" id="altura">
+            </div>
+            <div class="grupo">
+                <label for="fontSize" class="bold">Tamanho da Fonte</label>
+                <input type="range" min="2" max="60" v-model="fontSize" id="fontSize">
+            </div>
+            <div class="grupo">
+                <label for="fonte" class="bold">Fonte</label>
+                <select name="fonte" id="fonte" v-model="fonte">
+                    <option value="" disabled selected>Selecione uma fonte</option>
+                    <option value="monospace">Monospace</option>
+                    <option value="arial">Arial</option>
+                    <option value="fantasy">Fantasy</option>
+                    <option value="cursive">Cursive</option>
+                </select>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <button :style="estiloBotao">Botao</button>
+            </div>
+        </div>
+    </div>
+<script>
+    // Exercicio
+    const vm2 = new Vue({
+        el: "#exercicio",
+        data: {
+            color: "",
+            background: "",
+            fonte: "",
+            largura: 3,
+            altura: 2,
+            fontSize: 13
+        },
+        computed: {
+            estiloBotao() {
+                return {
+                    textOverflow: "ellipsis",
+                    background: this.background,
+                    color: this.color,
+                    width: this.largura + 'rem',
+                    height: this.altura + 'rem',
+                    fontFamily: this.fonte,
+                    fontSize: this.fontSize + 'px'
+                }
+            }
+        }
+    });
+
+
+    const vm = new Vue({
+        el: "#app",
+        data: {
+            nome: "",
+            email: "",
+            ano: 0
+        }
+    });
+</script>
+</body>
+</html>

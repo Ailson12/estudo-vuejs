@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./vue.js"></script>
+    <title>Vue js</title>
+</head>
+<body>
+   <div id="app">
+    <ul>
+        <li v-for="(curso, index) in cursos">{{ curso }}</li>
+    </ul>
+    <br><hr>
+
+    <ul>
+        <li v-for="(estado, index) in estados" :key="index">
+            {{ estado.populacao }}
+            ---
+            {{ estado.nome }}
+        </li>
+    </ul>
+
+    <br><hr>
+
+    <div v-for="numero in 10">
+        {{ numero }}
+    </div>
+
+    <br><hr>
+
+    <ul>
+        <li v-for="item in lista">{{ item }}</li>
+    </ul>
+    <button @click="removerItem">Remover item</button>
+    <button @click="modificarItem">Modificar item</button>
+   </div>
+
+   <br> <br><br><br>
+   <hr>
+   <!-- Exercicio -->
+   <div id="exercicio">
+        <ul>
+            <li v-for="(item, indice) in localidade">
+                {{ indice }}: {{ item }}
+            </li>
+        </ul>
+   </div>
+   <!--
+    Utilizando a api:
+    https://viacep.com.br/ws/04538133/json/
+    Mostre o cep, logradouro, complemento, bairro, localidade e uf do que for retornado.
+    -->
+<script>
+    // Exercicio
+    const vm2 = new Vue({
+        el: "#exercicio",
+        data: {
+            localidade: {}
+        },
+        created() {
+            this.getLocalidade();
+        },
+        methods: {
+            getLocalidade() {
+                fetch("https://viacep.com.br/ws/04538133/json/")
+                .then((response) => response.json())
+                .then((data) => {
+                    this.localidade = data;
+                });
+            }
+        }
+    });
+    // endExercicio
+
+    
+   const vm = new Vue({
+       el: "#app",
+       data: {
+           lista: ["item 01", "item 02", "item 03"],
+            estados: {
+                sp: {
+                    populacao: "1000",
+                    nome: "São Paulo"
+                },
+                mg: {
+                    populacao: "20000",
+                    nome: "Minas Gerais"
+                },
+                am: {
+                    populacao: "50000",
+                    nome: "Manaus"
+                }
+            },
+           cursos: ["html", "javascrip", "php", "java"]
+       },
+       methods: {
+           removerItem() {
+               this.lista.pop();
+           },
+           modificarItem() {
+               this.$set(this.lista, 0, "Banana");
+           }
+       }
+   });
+</script>
+</body>
+</html>

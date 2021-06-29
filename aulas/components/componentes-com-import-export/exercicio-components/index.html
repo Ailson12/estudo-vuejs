@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <primeiro-component></primeiro-component>
+        <br>
+        <segundo-component></segundo-component>
+        <br>
+        <terceiro-component></terceiro-component>
+
+        <br><hr>
+            <componente-primeiro></componente-primeiro>
+        <br><hr>
+            <componente-terceiro></componente-terceiro>
+        <br><hr>    
+
+        <informacoes-apple></informacoes-apple>
+
+        <br><hr>
+    </div>
+    <!-- 
+  Crie uma tela com 3 diferentes Componentes.
+
+  1 - Mostre o tempo do dia usando a API:
+  https://www.metaweather.com/api/location/455825/ (Código do Rio de Janeiro)
+
+  2 - Mostre a relação dolar/real
+  https://api.exchangeratesapi.io/latest?base=USD
+
+  3 - Mostre o valor de mercado da Apple (marketCap)
+  https://api.origamid.dev/stock/aapl/quote
+
+  Crie os componentes em arquivos separados e utilize import/export
+  O componente 1 deve ser registrado globalmente
+  O componente 2 deve ser registrado localmente dentro do componente 3.
+  O componente 3 deve ser registrado localmente da instância Vue.js
+ -->
+
+<script type="module">
+    const primeiroComponent = {
+        name: "primeiroComponente",
+        template: `<b>Meu Primeiro componente</b>`
+    }
+
+    const segundoComponent = {
+        name: "segundoComponente",
+        template: `<b>Meu segundo componente</b>`
+    }
+
+    const terceiroComponent = {
+        name: "terceiroComponente",
+        template: `<b>Meu terceiro componente</b>`
+    }
+
+    const Apple = {
+        name: "informacoesApple",
+        data() {
+            return {
+                dados: {}
+            }
+        },
+        template: `
+            <ul>
+                <li v-for="(item, indice) in dados" :key="item + indice"><b>{{ indice }}</b> : {{ item }}</li>
+            </ul>
+        `,
+        methods: {
+            getInformacoes() {
+                fetch("https://api.origamid.dev/stock/aapl/quote")
+                .then((response) => response.json())
+                .then((data) => this.dados = data);
+            }
+        },
+        created() {
+            this.getInformacoes();
+        }
+    }
+
+
+    import componentePrimeiro from "./componente-primeiro.js";
+
+    Vue.component("InformacoesApple", Apple);
+    Vue.component("componentePrimeiro", componentePrimeiro);
+
+    import componenteTerceiro from "./componente-terceiro.js";
+
+    const vm = new Vue({
+        el: "#app",
+        components: {
+            primeiroComponent,
+            segundoComponent,
+            terceiroComponent,
+            componenteTerceiro
+        }
+    });
+
+</script>
+</body>
+</html>

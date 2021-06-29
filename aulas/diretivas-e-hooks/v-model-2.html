@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs</title>
+    <script src="./vue.js"></script>
+    <style>
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input, textarea {
+            padding-left: 2rem;
+            padding: 8px;
+            border-radius: 4px;
+            border: 2px solid #673ab7;
+            margin-bottom: 10px;
+        }
+
+        form {
+            justify-content: center;
+            display: grid;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background: #673ab7;
+            color: white;
+            box-shadow: 2px 2px 2px 0px black;
+            font-size: 1.4rem;
+            font-family: "cursive";
+        }
+    </style>
+</head>
+<body>
+    <div id="exercicio">
+        <form name="formulario">
+            <label for="nome">Nome</label>
+            <input type="text" v-model="campos.nome" name="nome" id="nome" placeholder="Nome">
+            <br>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" v-model="campos.email" id="email" placeholder="email@dominio.com">
+            <br>
+
+            <label for="telefone">Telefone</label>
+            <input type="number" v-model="campos.telefone" name="telefone" id="telefone" placeholder="(00) 0000-0000">
+            <br>
+
+            <label for="mensagem">Mensagem</label>
+            <textarea name="mensagem" v-model="campos.mensagem" placeholder="Insira sua mensagem" id="mensagem" cols="30" rows="10"></textarea>
+            <br>
+
+            <button @click.prevent="salvar">Enviar</button>
+        </form>
+    </div>
+    <!-- 2 - Crie um formulário com, nome, email, telefone e mensagem.
+    Ao clicar em enviar, as informações preenchidas no formulário
+    devem aparecer abaixo do mesmo. (previna o comportamento padrão do botão enviar) -->
+<script>
+    const vm = new Vue({
+        el: "#exercicio",
+        data: {
+          campos: {}
+        },
+        methods: {
+            salvar() {
+                console.log(this.campos);
+            }
+        }
+    });
+</script>
+</body>
+</html>

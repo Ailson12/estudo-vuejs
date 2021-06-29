@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./vue.js"></script>
+    <title>Vue js</title>
+    <style>
+        option  {
+            color: black;
+        }
+
+        select {
+            padding-left: 16rem;
+            padding-bottom: 10px;
+            border-color: #4a2dde;
+            border-radius: 10px;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <!--
+  01 - Você possui o nome e sobrenome do usuário em data,
+  crie uma propriedade computed que retorne o nome completo
+  
+  02 - Utilize a rest API para puxar as capitais dos paises
+  Use um campo de select, onde o usuário pode selecionar o país.
+  https://restcountries.eu/rest/v2/all
+
+  Com uma função watch, mude a capital de acordo com o país selecionado:
+
+  Ex de campo select:
+
+  <select name="paises" id="paises" v-model="selecionado">
+    <option v-for="pais in paises" :value="pais.name">
+      {{pais.name}}
+    </option>
+  </select>
+-->
+
+  <div id="app">
+    <p>Nome Completo: {{ nomeCompleto }}</p>
+    <hr>
+
+    <select name="pais" id="pais" v-model="paisSelecionado">
+        <option v-for="(item, indice) in paises" :value="item.name">
+            {{ item.name }}
+        </option>
+    </select>
+
+    {{ capital.capital }}
+  </div>
+<script>
+    const vm = new Vue({
+        el: "#app",
+        data: {
+            paisSelecionado: "",
+            capital: "",
+            paises: [],
+            nome: "Ailson",
+            sobrenome: "Feitosa"
+        },
+        computed: {
+            nomeCompleto() {
+                return `${this.nome} ${this.sobrenome}`;
+            }
+        },
+        created() {
+            this.getPaises();
+        },
+        methods: {
+            getPaises() {
+                fetch("https://restcountries.eu/rest/v2/all")
+                .then((response) => response.json())
+                .then((data) =>  this.paises = data);
+            }
+        },
+        watch: {
+            paisSelecionado(valor) {
+                this.capital = this.paises.find((pais) => pais.name == valor);
+            }
+        }
+    });
+</script>
+</body>
+</html>
